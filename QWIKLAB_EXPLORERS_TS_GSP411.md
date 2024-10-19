@@ -5,17 +5,26 @@
 ### Run the following Commands in CloudShell
 
 ```
-curl -LO raw.githubusercontent.com/Titash-shil/Ingesting-New-Datasets-into-BigQuery-GSP411/refs/heads/main/gsp411.csv
 
-curl -LO raw.githubusercontent.com/Titash-shil/Ingesting-New-Datasets-into-BigQuery-GSP411/refs/heads/main/products.csv
+gcloud auth list
 
-bq mk ecommerce
+export PROJECT_ID=$(gcloud config get-value project)
+
+export PROJECT_ID=$DEVSHELL_PROJECT_ID
+
+bq mk --dataset ecommerce
 
 gsutil mb gs://$DEVSHELL_PROJECT_ID/
 
+
+curl -LO https://raw.githubusercontent.com/Titash-shil/Ingesting-New-Datasets-into-BigQuery-GSP411/refs/heads/main/gsp411.csv
+
+curl -LO https://raw.githubusercontent.com/Titash-shil/Ingesting-New-Datasets-into-BigQuery-GSP411/refs/heads/main/products.csv
+
+
 gsutil cp products.csv gs://$DEVSHELL_PROJECT_ID/
 
-gsutil cp gsp411.csv gs://$DEVSHELL_PROJECT_ID/
+gsutil cp techcps.csv gs://$DEVSHELL_PROJECT_ID/
 
 
 bq --location=US load --source_format=CSV --autodetect --skip_leading_rows=1 ecommerce.products gs://$DEVSHELL_PROJECT_ID/products.csv
@@ -40,7 +49,7 @@ ORDER BY
   restockingLeadTime DESC
 "
 
-cat > external_table_definition.json <<EOF
+cat > external_table_definition.json <<EOF_CP
 {
   "sourceFormat": "GOOGLE_SHEETS",
   "sourceUris": ["https://docs.google.com/spreadsheets/d/1Pyr2ifVgC82eCDNxBKgEXc33fkzMTPa2/edit?usp=sharing"],
@@ -52,9 +61,10 @@ cat > external_table_definition.json <<EOF
     ]
   }
 }
-EOF
+EOF_CP
 
 bq mk --external_table_definition=external_table_definition.json ecommerce.products_comments
+
 ```
 
 # Congratulations ..!!🎉  You completed the lab shortly..😃💯
