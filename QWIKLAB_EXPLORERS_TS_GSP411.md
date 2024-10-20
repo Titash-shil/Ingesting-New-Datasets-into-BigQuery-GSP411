@@ -7,7 +7,7 @@
 ```
 curl -LO https://raw.githubusercontent.com/Titash-shil/Ingesting-New-Datasets-into-BigQuery-GSP411/refs/heads/main/gsp411.csv
 
-curl -LO raw.githubusercontent.com/Titash-shil/Ingesting-New-Datasets-into-BigQuery-GSP411/refs/heads/main/products.csv
+curl -LO https://raw.githubusercontent.com/Titash-shil/Ingesting-New-Datasets-into-BigQuery-GSP411/refs/heads/main/products.csv
 
 bq mk ecommerce
 
